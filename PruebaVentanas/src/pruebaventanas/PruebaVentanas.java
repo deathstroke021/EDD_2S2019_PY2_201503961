@@ -61,6 +61,8 @@ public class PruebaVentanas extends Application {
             controller.setStagePrincipal(ventana);
             ventana.show();*/
             
+            //Mostrar treeview 4 y eventos del arbol
+            
             Stage ventana = new Stage();
             
             // Create the TreeViewHelper
@@ -75,12 +77,14 @@ public class PruebaVentanas extends Application {
 		// Select the root node
 		treeView.getSelectionModel().selectFirst();
 		// Create the root node and adds event handler to it
-		TreeItem rootItem = new TreeItem("Vehicles");
+		TreeItem rootItem = new TreeItem("/");
 		// Add children to the root
-		rootItem.getChildren().addAll(products);
+		rootItem.getChildren().addAll(products); //crear padre
 		// Set the Root Node
 		treeView.setRoot(rootItem);
-
+                
+                
+                //Modificar nodos
 		// Set editing related event handlers (OnEditStart)
 		treeView.setOnEditStart(new EventHandler<TreeView.EditEvent<String>>()
 		{
@@ -156,7 +160,7 @@ public class PruebaVentanas extends Application {
 		// Add the Scene to the Stage
 		ventana.setScene(scene);
 		// Set the Title for the Scene
-		ventana.setTitle("TreeView Example 4");
+		ventana.setTitle("EDD Drive");
 		// Display the stage
 		ventana.show();
 
@@ -164,14 +168,17 @@ public class PruebaVentanas extends Application {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) { // Muestra el login
         launch(args);
     }
+    
+    // Construccion del treeview numero 4
     
     
     	// Create the TreeView
 	private final TreeView<String> treeView = new TreeView<>();
 	// Create the TextArea
+        // Consola
 	private final TextArea textArea = new TextArea();
 	// Create the TextField
 	private TextField textField = new TextField();
@@ -283,21 +290,41 @@ public class PruebaVentanas extends Application {
 	}*/
 
 	// This method creates a VBox and it´s components and returns it to the calling Method
+        // Acomodar componentes
 	private VBox getRightPane()
 	{
 		// Create the addItemBtn and its corresponding Event Handler
-		Button addItemBtn = new Button("Add new Item");
+                // Boton añadir Items
+		Button addItemBtn = new Button("Crear carpeta");
 		addItemBtn.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
 			public void handle(ActionEvent event)
 			{
-				addItem(textField.getText());
+				addItem(textField.getText()); //Añade items
+			}
+		});
+                
+                Button addItemBtn2 = new Button("Crear archivo");
+		addItemBtn2.setOnAction(new EventHandler<ActionEvent>()
+		{
+			@Override
+			public void handle(ActionEvent event)
+			{
+                            
+                                String string = textField.getText();
+                                String[] parts = string.split(",");
+                                String part1 = parts[0];
+
+
+				addItem2(part1); //Añade items
 			}
 		});
 
+
 		// Create the removeItemBtn and its corresponding Event Handler
-		Button removeItemBtn = new Button("Remove Selected Item");
+                //Boton eliminar items
+		Button removeItemBtn = new Button("Eliminar");
 		removeItemBtn.setOnAction(new EventHandler<ActionEvent>()
 		{
 			@Override
@@ -315,13 +342,17 @@ public class PruebaVentanas extends Application {
 		// Create the HBox
 		HBox hbox = new HBox();
 		// Add Children to the HBox
-		hbox.getChildren().addAll(new Label("Item:"), textField, addItemBtn);
+		hbox.getChildren().addAll(new Label("Nombre:"), textField, addItemBtn);
+                
+                HBox hbox2 = new HBox();
+		// Add Children to the HBox
+		hbox2.getChildren().addAll(addItemBtn2,removeItemBtn);
 
 		// Create the VBox
 		VBox vbox = new VBox();
 		// Add children to the VBox
-		vbox.getChildren().addAll(new Label("Select an item to add to or remove."),hbox,removeItemBtn,
-				new Label("Message Log:"), textArea);
+		vbox.getChildren().addAll(new Label("Ingresar nombre de carpeta o archivo: archivo.ext,contenido."),hbox,hbox2,
+				new Label("Consola:"), textArea);
 		// Set the vertical space between each child in the VBox
 		vbox.setSpacing(10);
 
@@ -330,28 +361,31 @@ public class PruebaVentanas extends Application {
 
 
 	// Helper Method for Adding an Item
+        // Agregar Item
 	private void addItem(String value)
 	{
 		if (value == null || value.trim().equals(""))
 		{
-			this.writeMessage("Item cannot be empty.");
+			this.writeMessage("Debe ingresar un nombre.");
 			return;
 		}
 
 		TreeItem<String> parent = treeView.getSelectionModel().getSelectedItem();
+                
 
 		if (parent == null)
 		{
-			this.writeMessage("Select a node to add this item to.");
+			this.writeMessage("Seleccione un nodo.");
 			return;
 		}
 
 		// Check for duplicate
+                // Verificar repetidos
 		for(TreeItem<String> child : parent.getChildren())
 		{
 			if (child.getValue().equals(value))
 			{
-				this.writeMessage(value + " already exists under " + parent.getValue());
+				this.writeMessage(value + " ya existe en la carpeta " + parent.getValue());
 				return;
 			}
 		}
@@ -359,35 +393,92 @@ public class PruebaVentanas extends Application {
 		TreeItem<String> newItem = new TreeItem<String>(value);
 		parent.getChildren().add(newItem);
 
-		if (!parent.isExpanded())
+		if (!parent.isExpanded()) //Expande treeview
 		{
 			parent.setExpanded(true);
 		}
+                
+                //opcional
+                parent = newItem;
+                TreeItem<String> inf = new TreeItem<String>("");
+		parent.getChildren().add(inf);
+	}
+        
+        private void addItem2(String value)
+	{
+		if (value == null || value.trim().equals(""))
+		{
+			this.writeMessage("Debe ingresar un nombre.");
+			return;
+		}
+
+		TreeItem<String> parent = treeView.getSelectionModel().getSelectedItem();
+                
+
+		if (parent == null)
+		{
+			this.writeMessage("Seleccione un nodo.");
+			return;
+		}
+
+		// Check for duplicate
+                // Verificar repetidos
+		for(TreeItem<String> child : parent.getChildren())
+		{
+                    //String vacio = "";
+			if (child.getValue().equals(value))
+			{
+				this.writeMessage(value + " ya existe en la carpeta " + parent.getValue());
+				return;
+			}
+                        
+                        //Opcional
+                        /*else if(child.getValue().equals(vacio))
+			{
+				parent.getChildren().remove(vacio);
+			}*/
+		}
+                
+ 
+		TreeItem<String> newItem = new TreeItem<String>(value);
+                //parent.getChildren().remove("");
+		parent.getChildren().add(newItem);
+
+		if (!parent.isExpanded()) 
+		{
+			parent.setExpanded(true);
+		}
+                      
+                
 	}
 
 	// Helper Method for Removing an Item
+        //Eliminar Item
 	private void removeItem()
 	{
 		TreeItem<String> item = treeView.getSelectionModel().getSelectedItem();
 
 		if (item == null)
 		{
-			this.writeMessage("Select a node to remove.");
+			this.writeMessage("Seleccione un nodo.");
 			return;
 		}
 
 		TreeItem<String> parent = item.getParent();
 		if (parent == null )
 		{
-			this.writeMessage("Cannot remove the root node.");
+			this.writeMessage("No se puede remover la raiz.");
 		}
 		else
 		{
 			parent.getChildren().remove(item);
 		}
 	}
+        
+        
 
 	// Helper Methods for the Event Handlers
+        // Informacion de la consola
 	private void branchExpended(TreeItem.TreeModificationEvent<String> event)
 	{
 		String nodeValue = event.getSource().getValue().toString();
@@ -406,8 +497,22 @@ public class PruebaVentanas extends Application {
 		{
 			for(TreeItem<String> item : event.getAddedChildren())
 			{
-				this.writeMessage("Node " + item.getValue() + " has been added.");
+				
+                                
+                                if(item.getValue() != ""){
+                                    
+                                    
+                                    this.writeMessage("Node " + item.getValue() + " has been added.");
+                                    this.writeMessage("Ruta: ");
+                                    
+
+                                }
+                                
+                                
 			}
+                        
+                        
+                        //getParent()
 		}
 
 		if (event.wasRemoved())
