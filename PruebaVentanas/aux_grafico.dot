@@ -1,0 +1,9 @@
+digraph grafica{
+rankdir=TB;
+node [shape = record, style=filled, fillcolor=seashell2];
+nodo1 [ label ="<C0>|Nombre:one.mp3 Contenido:cancion Timestamp:2019-11-16 16:13:46.374 Usuario:Fernando Altura:1|<C1>"];
+nodo3 [ label ="Nombre:day.mp3 Contenido:cancion Timestamp:2019-11-16 16:14:00.389 Usuario:Fernando Altura:0"];
+nodo1:C0->nodo3
+nodo2 [ label ="Nombre:sad.mp3 Contenido:cancion Timestamp:2019-11-16 16:13:55.429 Usuario:Fernando Altura:0"];
+nodo1:C1->nodo2
+}

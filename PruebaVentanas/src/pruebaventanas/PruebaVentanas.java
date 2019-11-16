@@ -1,7 +1,10 @@
 package pruebaventanas;
 
+import avl.ArbolAVL;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Iterator;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -20,6 +23,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class PruebaVentanas extends Application {
+    
+    ArrayList<String> carpetas = new ArrayList<String>();
+    ArrayList<String> archivos = new ArrayList<String>();
+    
+    String usuario = "Fernando";
 
     private Stage stagePrincipal;
     private AnchorPane rootPane;
@@ -167,9 +175,13 @@ public class PruebaVentanas extends Application {
         } catch (Exception e) {
         }
     }
+    
+    //Ejecucion edddrive
 
     public static void main(String[] args) { // Muestra el login
         launch(args);
+        
+       
     }
     
     // Construccion del treeview numero 4
@@ -315,9 +327,32 @@ public class PruebaVentanas extends Application {
                                 String string = textField.getText();
                                 String[] parts = string.split(",");
                                 String part1 = parts[0];
+                                String part2 = parts[1];
 
 
-				addItem2(part1); //Añade items
+				addItem2(part1, part2); //Añade items
+			}
+		});
+                
+                //Mostrar arreglo Opcional
+                Button mBtn = new Button("Mostrar");
+		mBtn.setOnAction(new EventHandler<ActionEvent>()
+		{
+			@Override
+			public void handle(ActionEvent event)
+			{
+				mostrar();
+			}
+		});
+                
+                //Generar reporte AVL
+                Button avlBtn = new Button("Reporte AVL");
+		avlBtn.setOnAction(new EventHandler<ActionEvent>()
+		{
+			@Override
+			public void handle(ActionEvent event)
+			{
+				reporteavl();
 			}
 		});
 
@@ -346,7 +381,7 @@ public class PruebaVentanas extends Application {
                 
                 HBox hbox2 = new HBox();
 		// Add Children to the HBox
-		hbox2.getChildren().addAll(addItemBtn2,removeItemBtn);
+		hbox2.getChildren().addAll(addItemBtn2,removeItemBtn,avlBtn,mBtn);
 
 		// Create the VBox
 		VBox vbox = new VBox();
@@ -392,6 +427,11 @@ public class PruebaVentanas extends Application {
 
 		TreeItem<String> newItem = new TreeItem<String>(value);
 		parent.getChildren().add(newItem);
+                
+                
+                //Anadir padre e hijo
+                String registro = usuario + ","+ newItem.getParent().getValue() + "," +newItem.getValue();
+                carpetas.add(registro);
 
 		if (!parent.isExpanded()) //Expande treeview
 		{
@@ -404,7 +444,7 @@ public class PruebaVentanas extends Application {
 		parent.getChildren().add(inf);
 	}
         
-        private void addItem2(String value)
+        private void addItem2(String value, String value2)
 	{
 		if (value == null || value.trim().equals(""))
 		{
@@ -443,6 +483,12 @@ public class PruebaVentanas extends Application {
 		TreeItem<String> newItem = new TreeItem<String>(value);
                 //parent.getChildren().remove("");
 		parent.getChildren().add(newItem);
+                
+                Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                
+                //Anadir padre e hijo
+                String registro = usuario + ","+ newItem.getParent().getValue() + "," +newItem.getValue() + "," + value2 + "," + timestamp;
+                archivos.add(registro);
 
 		if (!parent.isExpanded()) 
 		{
@@ -451,6 +497,125 @@ public class PruebaVentanas extends Application {
                       
                 
 	}
+        
+        private void mostrar(){
+             System.out.println("Carpetas");
+            Iterator<String> nombreIterator = carpetas.iterator();
+            while(nombreIterator.hasNext()){
+                String elemento = nombreIterator.next();
+                System.out.print(elemento+"\n");
+	
+                
+            }
+            
+            System.out.println("Archivos");
+            Iterator<String> nombreIterator2 = archivos.iterator();
+            while(nombreIterator2.hasNext()){
+                String elemento = nombreIterator2.next();
+                System.out.print(elemento+"\n");
+	
+                
+            }
+	
+
+        }
+        
+        private void reporteavl(){
+            
+            TreeItem<String> parent = treeView.getSelectionModel().getSelectedItem();
+                
+
+		if (parent == null)
+		{
+			this.writeMessage("Seleccione un nodo.");
+			return;
+		}
+                
+                System.out.println("Usuario:" + usuario);
+                System.out.println("Carpeta: " + parent.getValue());
+                
+                /*for(int x=0;x<archivos.size();x++) {
+                    
+                    String string = archivos.get(x);
+                    String[] parts = string.split(",");
+                                String part1 = parts[0];
+                                String part2 = parts[1];
+                                String part3 = parts[2];
+                                String part4 = parts[3];
+                                String part5 = parts[4];
+                                
+                                if(part1 == usuario && part2 == parent.getValue()){
+                                    
+                                    System.out.println(archivos.get(x));
+                                    
+                                }
+                                
+
+                }*/
+                ArbolAVL arbol_texto=new ArbolAVL();
+        //Llenamos con información el árbol
+        /*arbol_texto.insertar("Juan");
+        arbol_texto.insertar("Pedro");
+        arbol_texto.insertar("María");
+        arbol_texto.insertar("Roberto");
+        arbol_texto.insertar("Teodoro");
+        arbol_texto.insertar("Manuel");
+        arbol_texto.insertar("Diego");
+        arbol_texto.insertar("Alejandro");
+        arbol_texto.insertar("Margarita");
+        arbol_texto.insertar("Luis");
+        arbol_texto.insertar("Hernán");
+        arbol_texto.insertar("Jaime");
+        arbol_texto.insertar("Ana");
+        arbol_texto.insertar("Francisco");
+        arbol_texto.insertar("Andrea");*/
+  
+                
+                Object[] array = archivos.toArray();
+                
+                for(int i=0;i<array.length;i++){
+                    
+                    System.out.println(array[i].toString());
+                    
+                    String string = array[i].toString();
+                    String[] parts = string.split(",");
+                                String part1 = parts[0];
+                                //System.out.println(part1);
+                                String part2 = parts[1];
+                                //System.out.println(part2);
+                                String part3 = parts[2];
+                                //System.out.println(part3);
+                                String part4 = parts[3];
+                                //System.out.println(part4);
+                                String part5 = parts[4];
+                                //System.out.println(part5);
+                                
+                                //System.out.println(usuario);
+                                //System.out.println(parent.getValue());
+                                
+                                if(part1.equals(usuario) && part2.equals(parent.getValue())){
+                                    
+                                    System.out.println("Existe archivo");
+                                    
+                                    arbol_texto.insertar(part3,part4,part5,part1);
+      
+                                    
+                                }
+                                else{
+                                    System.out.println("No Existe archivo");
+                                }
+                    
+                }
+                
+        //Graficamos el árbol generando la imagen arbol_texto.jpg
+        arbol_texto.graficar("arbol_texto.jpg");
+        //Imprimimos el contenido del árbol ordenado
+        arbol_texto.inorden();
+        
+        //Runtime.getRuntime().exec(new String[]{"cmd", "/c","start chrome http://goo.gl/EsomR0"});
+        navegadoravlrep();
+        
+        }
 
 	// Helper Method for Removing an Item
         //Eliminar Item
@@ -503,7 +668,7 @@ public class PruebaVentanas extends Application {
                                     
                                     
                                     this.writeMessage("Node " + item.getValue() + " has been added.");
-                                    this.writeMessage("Ruta: ");
+                                    //this.writeMessage("Ruta: ");
                                     
 
                                 }
@@ -546,4 +711,23 @@ public class PruebaVentanas extends Application {
 	{
 		this.textArea.appendText(msg + "\n");
 	}
+        
+        
+        private void navegadoravlrep(){
+            Runtime myRuntime = Runtime.getRuntime();
+            
+            
+            try{
+                myRuntime.exec("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.EXE file:///C:/Users/Fernando%20Armira/Downloads/Git/EDD_2S2019_PY2_201503961/PruebaVentanas/arbol_texto.jpg");
+                
+            }
+            catch(Exception ex){
+                ex.printStackTrace();
+                
+            }
+
+
+
+        }
+        
 }
