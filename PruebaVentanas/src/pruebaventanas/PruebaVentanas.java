@@ -28,6 +28,8 @@ public class PruebaVentanas extends Application {
     ArrayList<String> archivos = new ArrayList<String>();
     
     String usuario = "Fernando";
+    
+    //String partn1, partn2,partn3;
 
     private Stage stagePrincipal;
     private AnchorPane rootPane;
@@ -636,8 +638,122 @@ public class PruebaVentanas extends Application {
 		}
 		else
 		{
-			parent.getChildren().remove(item);
+                    
+                    Object[] array = archivos.toArray();
+                
+                for(int i=0;i<array.length;i++){
+                    
+                    //System.out.println(array[i].toString());
+                    
+                    String string = array[i].toString();
+                    String[] parts = string.split(",");
+                                String part1 = parts[0];
+                                //System.out.println(part1);
+                                String part2 = parts[1];
+                                //System.out.println(part2);
+                                String part3 = parts[2];
+                                //System.out.println(part3);
+                                String part4 = parts[3];
+                                //System.out.println(part4);
+                                String part5 = parts[4];
+                                //System.out.println(part5);
+                                
+                                //System.out.println(usuario);
+                                //System.out.println(parent.getValue());
+                                
+                                if(part1.equals(usuario) && part2.equals(parent.getValue()) && part3.equals(item.getValue())){
+                                    
+                                    System.out.println("Existe archivo");
+                                    
+                                    Iterator<String> nombreIterator = archivos.iterator();
+                                    while(nombreIterator.hasNext()){
+                                        String elemento = nombreIterator.next();
+                                        System.out.println(part1+","+part2+","+part3+","+part4+","+part5);
+                                        
+                                        if(elemento.equals(part1+","+part2+","+part3+","+part4+","+part5))
+                                            nombreIterator.remove();
+                                        }// Eliminamos el Elemento que hemos obtenido del Iterator
+                 
+                                    
+                                }
+                                
+                                else if(part1.equals(usuario) && part2.equals(item.getValue())){
+                                    
+                                    System.out.println("Existe carpeta");
+                                    
+                                    Iterator<String> nombreIterator = archivos.iterator();
+                                    while(nombreIterator.hasNext()){
+                                        String elemento = nombreIterator.next();
+                                        System.out.println(part1+","+part2+","+part3+","+part4+","+part5);
+                                        
+                                        if(elemento.equals(part1+","+part2+","+part3+","+part4+","+part5))
+                                            nombreIterator.remove();
+                                        }
+                                    Iterator<String> nombreIterator2 = carpetas.iterator();
+                                    while(nombreIterator2.hasNext()){
+                                        String elemento = nombreIterator2.next();
+                                        System.out.println(usuario+","+item.getParent().getValue()+","+item.getValue());
+                                        
+                                        if(elemento.equals(usuario+","+item.getParent().getValue()+","+item.getValue()))
+                                            nombreIterator2.remove();
+                                        }
+                                    
+                                    
+                                }
+                                else{
+                                    System.out.println("No Existe archivo");
+                                }
+                    
+                }
+		
+                                    Object[] array2 = carpetas.toArray();
+                
+                for(int i=0;i<array2.length;i++){
+                    
+                    //System.out.println(array[i].toString());
+                    
+                    String string = array2[i].toString();
+                    String[] parts = string.split(",");
+                                String part1 = parts[0];
+                                //System.out.println(part1);
+                                String part2 = parts[1];
+                                //System.out.println(part2);
+                                String part3 = parts[2];
+                                //System.out.println(part3);
+                                
+                                //System.out.println(usuario);
+                                //System.out.println(parent.getValue());
+                                
+                                if(part1.equals(usuario) && part2.equals(parent.getValue()) && part3.equals(item.getValue())){
+                                    
+                                    System.out.println("Existe carpeta");
+                                    
+                                    Iterator<String> nombreIterator = carpetas.iterator();
+                                    while(nombreIterator.hasNext()){
+                                        String elemento = nombreIterator.next();
+                                        System.out.println(part1+","+part2+","+part3);
+                                        
+                                        if(elemento.equals(part1+","+part2+","+part3))
+                                            nombreIterator.remove();
+                                        }// Eliminamos el Elemento que hemos obtenido del Iterator
+                 
+                                    
+                                }
+                                
+                                
+                                else{
+                                    System.out.println("No Existe carpeta");
+                                }
+                    
+                }
+                
+                parent.getChildren().remove(item);
 		}
+                
+                
+                
+                
+	     
 	}
         
         
@@ -699,6 +815,199 @@ public class PruebaVentanas extends Application {
 		this.writeMessage(event.getTreeItem() + " changed." +
 				" old = " + event.getOldValue() +
 				", new = " + event.getNewValue());
+                TreeItem<String> parent = event.getTreeItem().getParent();
+                
+                Object[] array = archivos.toArray();
+                
+                for(int i=0;i<array.length;i++){
+                    
+                    
+                    //System.out.println(array[i].toString());
+                    
+                    String string = array[i].toString();
+                    String[] parts = string.split(",");
+                                String part1 = parts[0];
+                                //System.out.println(part1);
+                                String part2 = parts[1];
+                                //System.out.println(part2);
+                                String part3 = parts[2];
+                                //System.out.println(part3);
+                                String part4 = parts[3];
+                                //System.out.println(part4);
+                                String part5 = parts[4];
+                                //System.out.println(part5);
+                                
+                                //System.out.println(usuario);
+                                //System.out.println(parent.getValue());
+                                
+                                if(part1.equals(usuario) && part2.equals(parent.getValue()) && part3.equals(event.getOldValue())){
+                                    
+                                    System.out.println("Existe archivo");
+                                    
+                                    if(!event.getNewValue().equals("")){
+                                        Iterator<String> nombreIterator = archivos.iterator();
+                                    while(nombreIterator.hasNext()){
+                                        String elemento = nombreIterator.next();
+                                        System.out.println(part1+","+part2+","+part3+","+part4+","+part5);
+                                        
+                                        if(elemento.equals(part1+","+part2+","+part3+","+part4+","+part5)){
+                                            //nombreIterator.remove();
+                                            int count = 0;
+                                            for(int k=0;k<array.length;k++){
+                                            
+                                            if(part1.equals(usuario) && part2.equals(parent.getValue()) && part3.equals(event.getNewValue())){
+                                                count++;
+                                            }
+                                            }
+                                            
+                                            if(count == 0){
+                                            archivos.set(i,part1+","+part2+","+event.getNewValue()+","+part4+","+part5);
+                                            }
+                                            else{
+                                                this.writeMessage("No se ha modificado,ya existe archivo con ese nombre");
+                                            }
+                                        
+                                        }
+                
+                                        }// Eliminamos el Elemento que hemos obtenido del Iterator
+                                        
+                                    }
+                                    
+                                    else{
+                                        this.writeMessage("No se ha modificado,no puede dejar vacio el nombre del archivo");
+                                    }
+                                    
+                                    
+                 
+                                    
+                                }
+                                
+                                
+                                else if(part1.equals(usuario) && part2.equals(event.getOldValue())){
+                                    
+                                    System.out.println("Existe carpeta");
+                                    if(!event.getNewValue().equals("")){
+                                        Iterator<String> nombreIterator = archivos.iterator();
+                                    while(nombreIterator.hasNext()){
+                                        String elemento = nombreIterator.next();
+                                        System.out.println(part1+","+part2+","+part3+","+part4+","+part5);
+                                        
+                                        if(elemento.equals(part1+","+part2+","+part3+","+part4+","+part5)){
+                                            //nombreIterator.remove();
+                                            int count = 0;
+                                            for(int k=0;k<array.length;k++){
+                                            
+                                            if(part1.equals(usuario) && part2.equals(event.getNewValue())){
+                                                count++;
+                                            }
+                                            }
+                                            
+                                            if(count == 0){
+                                            archivos.set(i,part1+","+event.getNewValue()+","+part3+","+part4+","+part5);
+                                            }
+                                            else{
+                                                this.writeMessage("No se ha modificado,ya existe carpeta con ese nombre");
+                                            }
+                                            
+                                            
+                                        }
+                                            
+                                        }
+                                   /* Iterator<String> nombreIterator2 = carpetas.iterator();
+                                    int j = 0;
+                                    while(nombreIterator2.hasNext()){
+                                        String elemento = nombreIterator2.next();
+                                        System.out.println(usuario+","+parent.getValue()+","+event.getOldValue());
+                                        
+                                        if(elemento.equals(usuario+","+parent.getValue()+","+event.getOldValue())){
+                                            //nombreIterator2.remove();
+                                            carpetas.set(j,part1+","+parent.getValue()+","+event.getNewValue());}
+                                        j++;
+                                        }*/
+                                        
+                                    }
+                                    
+                                    /*else{
+                                        this.writeMessage("No se puede dejar vacio el nombre de carpeta");
+                                    }*/
+                                    
+                       
+                                }
+                                else{
+                                    System.out.println("No Existe archivo");
+                                }
+                    
+                }
+                
+                Object[] array2 = carpetas.toArray();
+                
+                for(int i=0;i<array2.length;i++){
+                    
+                    //System.out.println(array[i].toString());
+                    
+                    String string = array2[i].toString();
+                    String[] parts = string.split(",");
+                                String part1 = parts[0];
+                                //System.out.println(part1);
+                                String part2 = parts[1];
+                                //System.out.println(part2);
+                                String part3 = parts[2];
+                                //System.out.println(part3);
+                                
+                                //System.out.println(usuario);
+                                //System.out.println(parent.getValue());
+                                
+                                if(part1.equals(usuario) && part2.equals(parent.getValue()) && part3.equals(event.getOldValue())){
+                                    
+                                    System.out.println("Existe carpeta");
+                                    
+                                    if(!event.getNewValue().equals("")){
+                                    Iterator<String> nombreIterator = carpetas.iterator();
+                                    while(nombreIterator.hasNext()){
+                                        String elemento = nombreIterator.next();
+                                        System.out.println(part1+","+part2+","+part3);
+                                        
+                                        if(elemento.equals(part1+","+part2+","+part3)){
+                                            
+                                            int count = 0;
+                                            for(int k=0;k<array2.length;k++){
+                                            
+                                            if(part1.equals(usuario) && part2.equals(parent.getValue()) && part3.equals(event.getNewValue())){
+                                                count++;
+                                            }
+                                            }
+                                            
+                                            if(count == 0){
+                                            carpetas.set(i,part1+","+part2+","+event.getNewValue());
+                                            }
+                                            else{
+                                                this.writeMessage("No se ha modificado,ya existe carpeta con ese nombre");
+                                            }
+                                            //partn1 = part1;
+                                            //partn2 = part2;
+                                            //partn3 = event.getNewValue();
+                                            
+                                        
+                                            //nombreIterator.remove();
+                                        }
+                                            
+                                        }// Eliminamos el Elemento que hemos obtenido del Iterator
+                                    }
+                                    else{
+                                        this.writeMessage("No se puede dejar vacio el nombre de carpeta");
+                                    }
+                                    
+                 
+                                    
+                                }
+                                
+                                
+                                else{
+                                    System.out.println("No Existe carpeta");
+                                }
+                    //String registro = partn1 + ","+ partn2 + "," + partn3;
+                    //carpetas.add(registro);
+                }
 	}
 
 	private void editCancel(TreeView.EditEvent<String> e)
