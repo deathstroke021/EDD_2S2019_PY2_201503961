@@ -1,10 +1,14 @@
 package pruebaventanas;
 
 import avl.ArbolAVL;
+import java.awt.Desktop;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -395,6 +399,16 @@ public class PruebaVentanas extends Application {
 				csv();
 			}
 		});
+                
+                Button dowBtn = new Button("Descargar");
+		dowBtn.setOnAction(new EventHandler<ActionEvent>()
+		{
+			@Override
+			public void handle(ActionEvent event)
+			{
+				download();
+			}
+		});
 
 		// Set the preferred number of text rows
 		textArea.setPrefRowCount(15);
@@ -408,7 +422,7 @@ public class PruebaVentanas extends Application {
                 
                 HBox hbox2 = new HBox();
 		// Add Children to the HBox
-		hbox2.getChildren().addAll(addItemBtn2,removeItemBtn,csvarBtn);
+		hbox2.getChildren().addAll(addItemBtn2,removeItemBtn,csvarBtn,dowBtn);
                 
                 HBox hbox3 = new HBox();
 		// Add Children to the HBox
@@ -865,6 +879,67 @@ public class PruebaVentanas extends Application {
 	     
 	}
         
+        private void download() {
+    
+    TreeItem<String> item = treeView.getSelectionModel().getSelectedItem();
+
+		if (item == null)
+		{
+			this.writeMessage("Seleccione un nodo.");
+			return;
+		}
+                
+                TreeItem<String> parent = item.getParent();
+		if (parent == null )
+		{
+			this.writeMessage("No se puede descargar la raiz.");
+		}
+		else
+		{
+                    
+                    Object[] array = archivos.toArray();
+                
+                for(int i=0;i<array.length;i++){
+                    
+                    //System.out.println(array[i].toString());
+                    
+                    String string = array[i].toString();
+                    String[] parts = string.split(",");
+                                String part1 = parts[0];
+                                //System.out.println(part1);
+                                String part2 = parts[1];
+                                //System.out.println(part2);
+                                String part3 = parts[2];
+                                //System.out.println(part3);
+                                String part4 = parts[3];
+                                //System.out.println(part4);
+                                String part5 = parts[4];
+                                //System.out.println(part5);
+                                
+                                //System.out.println(usuario);
+                                //System.out.println(parent.getValue());
+                                
+                                if(part1.equals(usuario) && part2.equals(parent.getValue()) && part3.equals(item.getValue())){
+                                    
+                                    System.out.println("Existe archivo");
+                                    
+                                    creardocumento(part3,part4);
+                                    abrirarchivo(part3+".txt");
+                 
+                                    
+                                }
+                                
+                                
+                                else{
+                                    System.out.println("No Existe archivo");
+                                }
+                    
+                }
+		
+		}
+                
+    
+}
         
 
 	// Helper Methods for the Event Handlers
@@ -1144,6 +1219,54 @@ public class PruebaVentanas extends Application {
 	{
 		this.textArea.appendText(msg + "\n");
 	}
+        
+        private void creardocumento(String nombre, String contenido){
+            
+            FileWriter fichero = null;
+        PrintWriter pw = null;
+        try
+        {
+            fichero = new FileWriter(nombre + ".txt");
+            pw = new PrintWriter(fichero);
+            pw.println(contenido);
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+           try {
+           // Nuevamente aprovechamos el finally para 
+           // asegurarnos que se cierra el fichero.
+           if (null != fichero)
+              fichero.close();
+           //Runtime rt = Runtime.getRuntime();
+           //rt.exec( "dot stack.dot -Tjpg -o stack.jpg");*/
+           
+           //String com = "C:\\Users\\Fernando Armira\\Downloads\\Git\\EDD_2S2019_PY2_201503961\\PruebaVentanas\\" + "Prueba" + ".txt";
+           //rt.exec(com);
+           
+           } catch (Exception e2) {
+              e2.printStackTrace();
+           }
+        }
+            
+        }
+        
+        public void abrirarchivo(String archivo){
+
+     try {
+
+            File objetofile = new File (archivo);
+            Desktop.getDesktop().open(objetofile);
+
+     }catch (IOException ex) {
+
+            System.out.println(ex);
+
+     }
+
+}      
         
         
         private void navegadoravlrep(){
