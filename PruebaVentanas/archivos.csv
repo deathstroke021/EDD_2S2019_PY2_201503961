@@ -1,0 +1,5 @@
+Archivo,Contenido
+Main.py,"""Python Script"""
+Header.h,"""este es un archivo de cabecera"""
+Hola.txt,"""Hola Mundo!!!"""
+chrome.exe,"""Este es un archivo ejecutable"""

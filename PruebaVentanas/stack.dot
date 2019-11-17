@@ -1,0 +1,5 @@
+digraph firsGraph{
+node [shape=record];
+rankdir=LR;
+nodoe_A [shape=record    label="|El nodoArchivosa sido modificado. Timestamp:2019-11-17 09:44:16.644 Usuario:Fernando|El nodotxt1.doc a sido creado. Timestamp:2019-11-17 09:44:08.683 Usuario:Fernando|El nodoArchivos a sido creado. Timestamp:2019-11-17 09:43:43.416 Usuario:Fernando"];
+}

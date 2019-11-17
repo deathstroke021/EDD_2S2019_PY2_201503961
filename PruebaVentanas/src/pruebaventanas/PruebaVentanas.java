@@ -1,6 +1,9 @@
 package pruebaventanas;
 
 import avl.ArbolAVL;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -30,6 +33,7 @@ public class PruebaVentanas extends Application {
     String usuario = "Fernando";
     
     //String partn1, partn2,partn3;
+    Stack stack = new Stack(100);
 
     private Stage stagePrincipal;
     private AnchorPane rootPane;
@@ -357,6 +361,17 @@ public class PruebaVentanas extends Application {
 				reporteavl();
 			}
 		});
+                
+                //Generar bitacora
+                Button bitBtn = new Button("Historial");
+		bitBtn.setOnAction(new EventHandler<ActionEvent>()
+		{
+			@Override
+			public void handle(ActionEvent event)
+			{
+				reportestack();
+			}
+		});
 
 
 		// Create the removeItemBtn and its corresponding Event Handler
@@ -368,6 +383,16 @@ public class PruebaVentanas extends Application {
 			public void handle(ActionEvent event)
 			{
 				removeItem();
+			}
+		});
+                
+                Button csvarBtn = new Button("Cargar archivos");
+		csvarBtn.setOnAction(new EventHandler<ActionEvent>()
+		{
+			@Override
+			public void handle(ActionEvent event)
+			{
+				csv();
 			}
 		});
 
@@ -383,13 +408,17 @@ public class PruebaVentanas extends Application {
                 
                 HBox hbox2 = new HBox();
 		// Add Children to the HBox
-		hbox2.getChildren().addAll(addItemBtn2,removeItemBtn,avlBtn,mBtn);
+		hbox2.getChildren().addAll(addItemBtn2,removeItemBtn,csvarBtn);
+                
+                HBox hbox3 = new HBox();
+		// Add Children to the HBox
+		hbox3.getChildren().addAll(avlBtn,bitBtn,mBtn);
 
 		// Create the VBox
 		VBox vbox = new VBox();
 		// Add children to the VBox
-		vbox.getChildren().addAll(new Label("Ingresar nombre de carpeta o archivo: archivo.ext,contenido."),hbox,hbox2,
-				new Label("Consola:"), textArea);
+		vbox.getChildren().addAll(new Label("Ingresar nombre de carpeta o archivo: archivo.ext,contenido"),new Label("Para cargar csv ingresar nombre del archivo"),hbox,hbox2,new Label("Reportes:"),hbox3, new Label("Consola:"), textArea);
+				
 		// Set the vertical space between each child in the VBox
 		vbox.setSpacing(10);
 
@@ -500,6 +529,70 @@ public class PruebaVentanas extends Application {
                 
 	}
         
+        private void csv(){
+            
+            TreeItem<String> parent = treeView.getSelectionModel().getSelectedItem();
+                
+
+		if (parent == null)
+		{
+			this.writeMessage("Seleccione un nodo.");
+			return;
+		}
+                
+                    String csvFile = textField.getText();
+                    BufferedReader br = null;
+                    String line = "";
+                    //Se define separador ","
+                    String cvsSplitBy = ",";
+                    try {
+                            br = new BufferedReader(new FileReader(csvFile));
+                            while ((line = br.readLine()) != null) {
+                                String[] datos = line.split(cvsSplitBy);
+                                String sinComillas = datos[1].replace("\"", "");
+                                
+                                //Imprime datos.
+                                 System.out.println(datos[0] + ", " + sinComillas);
+                                 
+                     if(!datos[0].equals("Archivo") && !sinComillas.equals("Contenido")){
+                         
+                
+                TreeItem<String> newItem = new TreeItem<String>(datos[0]);
+                //parent.getChildren().remove("");
+		parent.getChildren().add(newItem);
+ 
+		
+                
+                Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                
+                //Anadir padre e hijo
+                String registro = usuario + ","+ newItem.getParent().getValue() + "," +newItem.getValue() + "," + sinComillas + "," + timestamp;
+                archivos.add(registro);
+                
+                if (!parent.isExpanded()) 
+		{
+			parent.setExpanded(true);
+		}
+                     }
+    }
+                            
+                            //Excepciones
+} catch (FileNotFoundException e) {
+    e.printStackTrace();
+} catch (IOException e) {
+    e.printStackTrace();
+} finally {
+    if (br != null) {
+        try {
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+           
+        } //FIN METODO CSV UN PUTO DESASTRE
+        
         private void mostrar(){
              System.out.println("Carpetas");
             Iterator<String> nombreIterator = carpetas.iterator();
@@ -518,7 +611,8 @@ public class PruebaVentanas extends Application {
 	
                 
             }
-	
+            
+
 
         }
         
@@ -617,6 +711,21 @@ public class PruebaVentanas extends Application {
         //Runtime.getRuntime().exec(new String[]{"cmd", "/c","start chrome http://goo.gl/EsomR0"});
         navegadoravlrep();
         
+        }
+        
+        public void reportestack(){
+            
+                /*stack.push(10);
+		stack.push(20);
+		stack.push(30);
+		stack.push(40);
+		stack.push(50);*/
+
+                stack.dot();
+                
+                navegadorstackrep();
+                
+            
         }
 
 	// Helper Method for Removing an Item
@@ -785,6 +894,10 @@ public class PruebaVentanas extends Application {
                                     
                                     this.writeMessage("Node " + item.getValue() + " has been added.");
                                     //this.writeMessage("Ruta: ");
+                                    Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                                    
+                                    String com= "El nodo" + item.getValue() + " a sido creado."+ " Timestamp:" + timestamp + " Usuario:" + usuario;
+                                    stack.push(com);
                                     
 
                                 }
@@ -801,6 +914,11 @@ public class PruebaVentanas extends Application {
 			for(TreeItem<String> item : event.getRemovedChildren())
 			{
 				this.writeMessage("Node " + item.getValue() + " has been removed.");
+                                
+                                Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                                    
+                                    String com= "El nodo" + item.getValue() + " a sido eliminado."+ " Timestamp:" + timestamp + " Usuario:" + usuario;
+                                    stack.push(com);
 			}
 		}
 	}
@@ -815,6 +933,12 @@ public class PruebaVentanas extends Application {
 		this.writeMessage(event.getTreeItem() + " changed." +
 				" old = " + event.getOldValue() +
 				", new = " + event.getNewValue());
+                
+                Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                                    
+                                    String com= "El nodo" + event.getTreeItem().getValue() + "a sido modificado."+ " Timestamp:" + timestamp + " Usuario:" + usuario;
+                                    stack.push(com);
+                                    
                 TreeItem<String> parent = event.getTreeItem().getParent();
                 
                 Object[] array = archivos.toArray();
@@ -1038,5 +1162,26 @@ public class PruebaVentanas extends Application {
 
 
         }
+        
+        private void navegadorstackrep(){
+            Runtime myRuntime = Runtime.getRuntime();
+            
+            
+            try{
+                myRuntime.exec("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.EXE file:///C:/Users/Fernando%20Armira/Downloads/Git/EDD_2S2019_PY2_201503961/PruebaVentanas/stack.jpg");
+                
+            }
+            catch(Exception ex){
+                ex.printStackTrace();
+                
+            }
+
+
+
+        }
+        
+        
+        
+        
         
 }

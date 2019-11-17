@@ -8,7 +8,8 @@
   </information>
   <resources>
     <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
-    <jar href="PruebaVentanas.jar" size="27963" download="eager" />
+    <jar href="PruebaVentanas.jar" size="32793" download="eager" />
+    <jar href="lib\opencsv-5.0.jar" size="215258" download="eager" />
   </resources>
 <security>
   <all-permissions/>
