@@ -1,0 +1,27 @@
+graph nombre_del_grafo {
+       "idNodo1" [label="/"];
+       "idNodo2" [label="documentos"];
+       "idNodo3" [label="tareas"];
+       "idNodo4" [label="juegos"];
+       "idNodo5" [label="musica"];
+       "idNodo6" [label="metal"];
+       "idNodo7" [label="otros"];
+       "idNodo8" [label="documentos"];
+       "idNodo9" [label="tareas"];
+       "idNodo1" -- "idNodo2";
+       "idNodo1" -- "idNodo4";
+       "idNodo1" -- "idNodo5";
+       "idNodo1" -- "idNodo7";
+       "idNodo2" -- "idNodo3";
+       "idNodo5" -- "idNodo6";
+       "idNodo7" -- "idNodo8";
+       "idNodo8" -- "idNodo9";
+  "idNodo1" -- "idNodo2";
+  "idNodo1" -- "idNodo2";
+  "idNodo1" -- "idNodo2";
+  "idNodo1" -- "idNodo2";
+  "idNodo1" -- "idNodo2";
+
+
+
+}

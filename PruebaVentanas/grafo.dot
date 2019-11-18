@@ -10,10 +10,9 @@ node [shape = circle,
 node [fillcolor = white]
 
 edge [color = grey]
-"/" -> {b}
-"/" -> {c}
-"/" -> {d}
-b -> {e f g h i j}
-c -> {k l m n o p}
-d -> {q r s t u v}
+"/" -> {documentos,juegos,musica,otros}
+documentos -> {tareas}
+musica -> {metal}
+otros -> {documentos}
+documentos -> {tareas}
 }

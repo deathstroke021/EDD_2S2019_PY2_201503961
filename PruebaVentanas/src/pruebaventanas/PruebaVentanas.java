@@ -326,7 +326,7 @@ public class PruebaVentanas extends Application {
 			@Override
 			public void handle(ActionEvent event)
 			{
-				arbolusuario(); //Añade items
+				grafo(); //Añade items
                             
 			}
 		});
@@ -1056,7 +1056,7 @@ public class PruebaVentanas extends Application {
                 
                 for(int i=0;i<array2.length;i++){
                     
-                    //System.out.println(array[i].toString());
+                    System.out.println(array2[i].toString());
                     
                     String string = array2[i].toString();
                     String[] parts = string.split(",");
@@ -1064,34 +1064,45 @@ public class PruebaVentanas extends Application {
                                 //System.out.println(part1);
                                 String part2 = parts[1];
                                 //System.out.println(part2);
-                                String part3 = parts[2];
+                                //String part3 = parts[2];
                                 //System.out.println(part3);
                                 
                                 //System.out.println(usuario);
                                 //System.out.println(parent.getValue());
                                 
-                                if(part1.equals(usuario)){
-                                    
-                                    System.out.println("Existe usuario");
-                                    System.out.println(array2[i].toString());
-                                    
-                                    for(int j=0;j<array2.length;j++){
-                    
-                    //System.out.println(array[i].toString());
-                    
-                    String string2 = array2[j].toString();
-                    String[] parts2 = string2.split(",");
+                                String string2 = part2;
+                                String r = "";
+                    String[] parts2 = string2.split("/");
                                 String part21 = parts2[0];
-                                //System.out.println(part1);
-                                String part22 = parts2[1];
-                                //System.out.println(part2);
-                                String part23 = parts2[2];
-                                
-                                if(part2.equals(part22)){
-                                    System.out.println("Padre: " +part22+ " Hijo:" + part23);
+                                //System.out.println(part21);
+                                //String part22 = parts2[1];
+                                //System.out.println(part22);
+                                for(int k=1;k<parts2.length - 1;k++){
+                                    r+=parts2[k]+"/";
+                                    
                                 }
+                                if(r.equals("")){
+                                    
+                                }
+                                String rutab = r + "root"; //Direccion - nodohijo
+                                System.out.println(rutab);
                                 
-                                    }
+                                //String part23 = parts[2];
+                                //System.out.println(part3);
+                                //String part4 = parts[3];
+                                
+                                //String ruta = ruta(parent);
+                                
+                                
+                                if(part1.equals(usuario) && rutab.equals("root") ){
+                                    
+                                    //System.out.println("Existe usuario");
+                                    System.out.println(part21);
+                                    
+                                    /*for(int j=0;j<array2.length;j++){
+                    
+
+                                    }*/
                                     
 
                                            
@@ -1100,7 +1111,7 @@ public class PruebaVentanas extends Application {
                                 
                                 
                                 else{
-                                    System.out.println("No Existe carpeta");
+                                    System.out.println("No Existen registros");
                                 }
                 }
             
@@ -1439,13 +1450,13 @@ public class PruebaVentanas extends Application {
                     
                     String string = array[i].toString();
                     String[] parts = string.split(",");
-                                String part1 = parts[0];
+                                String part1 = parts[0]; // usuario
                                 //System.out.println(part1);
-                                String part2 = parts[1];
+                                String part2 = parts[1]; // ruta
                                 //System.out.println(part2);
-                                String part3 = parts[2];
+                                String part3 = parts[2]; // contenido
                                 //System.out.println(part3);
-                                String part4 = parts[3];
+                                String part4 = parts[3]; // //timestamp
                                 //System.out.println(part4);
                                 //String part5 = parts[4];
                                 //System.out.println(part5);
@@ -1553,6 +1564,7 @@ public class PruebaVentanas extends Application {
                                     
                                 }
                                 
+                                //Modificacion de carpetas
                                 
                                 else if(part1.equals(usuario) && rutab.equals(ruta)){
                                     int count = 0;
