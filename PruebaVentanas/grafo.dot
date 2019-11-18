@@ -1,0 +1,19 @@
+digraph circo {
+
+graph [layout = circo]
+
+node [shape = circle,
+      style = filled,
+      color = grey
+      ]
+
+node [fillcolor = white]
+
+edge [color = grey]
+"/" -> {b}
+"/" -> {c}
+"/" -> {d}
+b -> {e f g h i j}
+c -> {k l m n o p}
+d -> {q r s t u v}
+}

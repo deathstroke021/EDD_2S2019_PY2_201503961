@@ -34,6 +34,8 @@ public class PruebaVentanas extends Application {
     ArrayList<String> carpetas = new ArrayList<String>();
     ArrayList<String> archivos = new ArrayList<String>();
     
+    ArrayList<String> auxiliar = new ArrayList<String>();
+    
     String usuario = "Fernando";
     
     //String partn1, partn2,partn3;
@@ -317,6 +319,18 @@ public class PruebaVentanas extends Application {
 	{
 		// Create the addItemBtn and its corresponding Event Handler
                 // Boton añadir Items
+            
+            Button updBtn = new Button("Actualizar");
+		updBtn.setOnAction(new EventHandler<ActionEvent>()
+		{
+			@Override
+			public void handle(ActionEvent event)
+			{
+				arbolusuario(); //Añade items
+                            
+			}
+		});
+                
 		Button addItemBtn = new Button("Crear carpeta");
 		addItemBtn.setOnAction(new EventHandler<ActionEvent>()
 		{
@@ -324,6 +338,7 @@ public class PruebaVentanas extends Application {
 			public void handle(ActionEvent event)
 			{
 				addItem(textField.getText()); //Añade items
+                            
 			}
 		});
                 
@@ -341,6 +356,7 @@ public class PruebaVentanas extends Application {
 
 
 				addItem2(part1, part2); //Añade items
+                                //obtenerdireccion(textField.getText());
 			}
 		});
                 
@@ -426,7 +442,7 @@ public class PruebaVentanas extends Application {
                 
                 HBox hbox3 = new HBox();
 		// Add Children to the HBox
-		hbox3.getChildren().addAll(avlBtn,bitBtn,mBtn);
+		hbox3.getChildren().addAll(avlBtn,bitBtn,mBtn,updBtn);
 
 		// Create the VBox
 		VBox vbox = new VBox();
@@ -438,6 +454,96 @@ public class PruebaVentanas extends Application {
 
 		return vbox;
 	}
+        
+        private void arbolusuario(){
+            
+            Object[] array2 = carpetas.toArray();
+                
+                for(int i=0;i<array2.length;i++){
+                    
+                    //System.out.println(array[i].toString());
+                    
+                    String string = array2[i].toString();
+                    String[] parts = string.split(",");
+                                String part1 = parts[0];
+                                //System.out.println(part1);
+                                String part2 = parts[1];
+                                //System.out.println(part2);
+
+                                //System.out.println(usuario);
+                                //System.out.println(parent.getValue());
+                                
+                                if(part1.equals(usuario)){
+                                    
+                                    System.out.println("Existe usuario");
+                                    System.out.println(array2[i].toString());
+                                    
+
+                    //System.out.println(array[i].toString());
+                    
+                    String string2 = part2;
+                    String[] parts2 = string2.split("/");
+                    
+                    for(int j=0;j<parts2.length;j++){
+                        System.out.println(parts2[j]);
+                    }
+
+
+                                    
+                                    
+
+                                           
+                                        }
+                 
+                                
+                                
+                                else{
+                                    System.out.println("No Existe carpeta");
+                                }
+                }
+            
+        }
+        
+        private void addItemuser(String value){
+            if (value == null || value.trim().equals(""))
+		{
+			this.writeMessage("Debe ingresar un nombre.");
+			return;
+		}
+
+		TreeItem<String> parent = treeView.getSelectionModel().getSelectedItem();
+                
+
+		if (parent == null)
+		{
+			this.writeMessage("Seleccione un nodo.");
+			return;
+		}
+
+		// Check for duplicate
+                // Verificar repetidos
+		for(TreeItem<String> child : parent.getChildren())
+		{
+			if (child.getValue().equals(value))
+			{
+				this.writeMessage(value + " ya existe en la carpeta " + parent.getValue());
+				return;
+			}
+		}
+
+		TreeItem<String> newItem = new TreeItem<String>(value);
+		parent.getChildren().add(newItem);
+                
+                
+                //Anadir padre e hijo
+                
+
+		if (!parent.isExpanded()) //Expande treeview
+		{
+			parent.setExpanded(true);
+		}
+            
+        }
 
 
 	// Helper Method for Adding an Item
@@ -475,8 +581,7 @@ public class PruebaVentanas extends Application {
                 
                 
                 //Anadir padre e hijo
-                String registro = usuario + ","+ newItem.getParent().getValue() + "," +newItem.getValue();
-                carpetas.add(registro);
+                
 
 		if (!parent.isExpanded()) //Expande treeview
 		{
@@ -487,7 +592,53 @@ public class PruebaVentanas extends Application {
                 parent = newItem;
                 TreeItem<String> inf = new TreeItem<String>("");
 		parent.getChildren().add(inf);
+                
+                parent = parent.getParent();
+                
+                
+                String cadena = "";
+                String ruta = "";
+                
+                if(!parent.getValue().equals("/")){
+                
+                while(!parent.getParent().getValue().equals("/")){
+                    //System.out.println(parent.getValue());
+                    //cadena += parent.getParent().getValue();
+                    //auxiliar.add(parent.getParent().getValue());
+                    cadena += parent.getParent().getValue() + "/";
+                    
+                    parent = parent.getParent();
+                    
+                    }
+                
+                    
+                    /*Object[] array = auxiliar.toArray();
+                
+                for(int i=array.length - 1;i>=0;i--){
+                    cadena += array[i] +"/";
+                
+                }*/
+                    
+                   //ruta = "/"+cadena+newItem.getParent().getValue()+"/"+newItem.getValue();
+                   ruta = newItem.getValue() +"/" + newItem.getParent().getValue() +"/" +cadena +"root";
+                   System.out.println(ruta);
+                }
+                else{
+                    //ruta = "/"+newItem.getValue();
+                    ruta = newItem.getValue()+ "/root"; 
+                    System.out.println(ruta);
+                }
+                
+                   String registro = usuario + "," + ruta;
+                   carpetas.add(registro);
+                  
+                   
+                   //auxiliar.clear();
+                
+           
 	}
+        
+       
         
         private void addItem2(String value, String value2)
 	{
@@ -529,19 +680,149 @@ public class PruebaVentanas extends Application {
                 //parent.getChildren().remove("");
 		parent.getChildren().add(newItem);
                 
-                Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-                
-                //Anadir padre e hijo
-                String registro = usuario + ","+ newItem.getParent().getValue() + "," +newItem.getValue() + "," + value2 + "," + timestamp;
-                archivos.add(registro);
-
-		if (!parent.isExpanded()) 
+                if (!parent.isExpanded()) 
 		{
 			parent.setExpanded(true);
 		}
-                      
+                
+                Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+                
+                //Anadir padre e hijo
+                
+                
+                //System.out.println("Ruta: "+ parent.getParent().getValue()+"/" + parent.getValue() + "/" + newItem.getValue());
+                //parent = parent.getParent();
+                //System.out.println(parent.getParent().getValue());
+                String cadena = "";
+                String ruta = "";
+                
+                if(!parent.getValue().equals("/")){
+                
+                while(!parent.getParent().getValue().equals("/")){
+                    //System.out.println(parent.getValue());
+                    cadena += parent.getParent().getValue() + "/";
+                    //auxiliar.add(parent.getParent().getValue());
+                    parent = parent.getParent();
+                    
+                    }
+                
+                    
+                    /*Object[] array = auxiliar.toArray();
+                
+                for(int i=array.length - 1;i>=0;i--){
+                    cadena += array[i] +"/";
+                
+                }*/
+                    
+                   //ruta = "/"+cadena+newItem.getParent().getValue()+"/"+newItem.getValue();
+                   ruta = newItem.getValue()+ "/" + newItem.getParent().getValue() +"/" + cadena + "root";
+                   System.out.println(ruta);
+                }
+                else{
+                    //ruta = "/"+newItem.getValue();
+                    ruta = newItem.getValue() + "/root";
+                    System.out.println(ruta);
+                }
+                
+                   
+                   String registro = usuario + ","+ ruta + "," + value2 + "," + timestamp;
+                   archivos.add(registro);
+                   
+                   //auxiliar.clear();
+                   
+         
                 
 	}
+        
+        public String ruta(TreeItem<String> nodo){
+            
+            //TreeItem<String> newItem = nodo;
+            TreeItem<String> parent = nodo;
+                
+
+		if (parent == null)
+		{
+			this.writeMessage("Seleccione un nodo.");
+			//return;
+		}
+                
+                String cadena = "";
+                String ruta = "";
+                
+                if(!parent.getValue().equals("/")){
+                
+                while(!parent.getParent().getValue().equals("/")){
+                    //System.out.println(parent.getValue());
+                    cadena += parent.getParent().getValue() + "/";
+                    //auxiliar.add(parent.getParent().getValue());
+                    parent = parent.getParent();
+                    
+                    }
+                
+                    
+                    /*Object[] array = auxiliar.toArray();
+                
+                for(int i=array.length - 1;i>=0;i--){
+                    cadena += array[i] +"/";
+                
+                }*/
+                    
+                   //ruta = "/"+cadena+newItem.getParent().getValue()+"/"+newItem.getValue();
+                   ruta = nodo.getValue()+"/" + cadena + "root";
+                   //System.out.println(ruta);
+                }
+                else{
+                    //ruta = "/"+newItem.getValue();
+                    ruta = "/root";
+                    //System.out.println(ruta);
+                }
+            return ruta;
+        }
+        
+        public String rutaar(TreeItem<String> nodo){
+            
+            TreeItem<String> newItem = nodo;
+            TreeItem<String> parent = newItem.getParent();
+                
+
+		if (parent == null)
+		{
+			this.writeMessage("Seleccione un nodo.");
+			//return;
+		}
+                
+                String cadena = "";
+                String ruta = "";
+                
+                if(!parent.getValue().equals("/")){
+                
+                while(!parent.getParent().getValue().equals("/")){
+                    //System.out.println(parent.getValue());
+                    cadena += parent.getParent().getValue() + "/";
+                    //auxiliar.add(parent.getParent().getValue());
+                    parent = parent.getParent();
+                    
+                    }
+                
+                    
+                    /*Object[] array = auxiliar.toArray();
+                
+                for(int i=array.length - 1;i>=0;i--){
+                    cadena += array[i] +"/";
+                
+                }*/
+                    
+                   //ruta = "/"+cadena+newItem.getParent().getValue()+"/"+newItem.getValue();
+                   ruta = newItem.getValue()+"/"+ parent.getValue()+"/" + cadena + "root";
+                   //System.out.println(ruta);
+                }
+                else{
+                    //ruta = "/"+newItem.getValue();
+                    ruta = newItem + "/root";
+                    //System.out.println(ruta);
+                }
+            return ruta;
+        }
         
         private void csv(){
             
@@ -608,6 +889,8 @@ public class PruebaVentanas extends Application {
         } //FIN METODO CSV UN PUTO DESASTRE
         
         private void mostrar(){
+            
+            
              System.out.println("Carpetas");
             Iterator<String> nombreIterator = carpetas.iterator();
             while(nombreIterator.hasNext()){
@@ -625,6 +908,8 @@ public class PruebaVentanas extends Application {
 	
                 
             }
+            
+            //grafo();
             
 
 
@@ -685,7 +970,7 @@ public class PruebaVentanas extends Application {
                 
                 for(int i=0;i<array.length;i++){
                     
-                    System.out.println(array[i].toString());
+                    //System.out.println(array[i].toString());
                     
                     String string = array[i].toString();
                     String[] parts = string.split(",");
@@ -697,23 +982,44 @@ public class PruebaVentanas extends Application {
                                 //System.out.println(part3);
                                 String part4 = parts[3];
                                 //System.out.println(part4);
-                                String part5 = parts[4];
-                                //System.out.println(part5);
                                 
+                                String string2 = part2;
+                                String r = "";
+                    String[] parts2 = string2.split("/");
+                                String part21 = parts2[0];
+                                //System.out.println(part21);
+                                String part22 = parts2[1];
+                                //System.out.println(part22);
+                                for(int k=1;k<parts2.length - 1;k++){
+                                    r+=parts2[k]+"/";
+                                    
+                                }
+                                
+                                String rutab = r + "root";
+                                //System.out.println(rutab);
+                                
+                                //String part23 = parts[2];
+                                //System.out.println(part3);
+                                //String part4 = parts[3];
+                                
+                                String ruta = ruta(parent);
+                                //System.out.println(ruta);
                                 //System.out.println(usuario);
                                 //System.out.println(parent.getValue());
                                 
-                                if(part1.equals(usuario) && part2.equals(parent.getValue())){
+                                if(part1.equals(usuario) && rutab.equals(ruta)){
                                     
                                     System.out.println("Existe archivo");
                                     
-                                    arbol_texto.insertar(part3,part4,part5,part1);
+                                    //arbol_texto.insertar(part3,part4,part5,part1);
+                                    arbol_texto.insertar(part21,part3,part4,part1);
       
                                     
                                 }
                                 else{
                                     System.out.println("No Existe archivo");
                                 }
+                                
                     
                 }
                 
@@ -739,6 +1045,64 @@ public class PruebaVentanas extends Application {
                 
                 navegadorstackrep();
                 
+            
+        }
+        
+        
+        //Generar grafo
+        public void grafo(){
+            
+            Object[] array2 = carpetas.toArray();
+                
+                for(int i=0;i<array2.length;i++){
+                    
+                    //System.out.println(array[i].toString());
+                    
+                    String string = array2[i].toString();
+                    String[] parts = string.split(",");
+                                String part1 = parts[0];
+                                //System.out.println(part1);
+                                String part2 = parts[1];
+                                //System.out.println(part2);
+                                String part3 = parts[2];
+                                //System.out.println(part3);
+                                
+                                //System.out.println(usuario);
+                                //System.out.println(parent.getValue());
+                                
+                                if(part1.equals(usuario)){
+                                    
+                                    System.out.println("Existe usuario");
+                                    System.out.println(array2[i].toString());
+                                    
+                                    for(int j=0;j<array2.length;j++){
+                    
+                    //System.out.println(array[i].toString());
+                    
+                    String string2 = array2[j].toString();
+                    String[] parts2 = string2.split(",");
+                                String part21 = parts2[0];
+                                //System.out.println(part1);
+                                String part22 = parts2[1];
+                                //System.out.println(part2);
+                                String part23 = parts2[2];
+                                
+                                if(part2.equals(part22)){
+                                    System.out.println("Padre: " +part22+ " Hijo:" + part23);
+                                }
+                                
+                                    }
+                                    
+
+                                           
+                                        }
+                 
+                                
+                                
+                                else{
+                                    System.out.println("No Existe carpeta");
+                                }
+                }
             
         }
 
@@ -778,46 +1142,73 @@ public class PruebaVentanas extends Application {
                                 //System.out.println(part3);
                                 String part4 = parts[3];
                                 //System.out.println(part4);
-                                String part5 = parts[4];
+                                //String part5 = parts[4];
                                 //System.out.println(part5);
                                 
                                 //System.out.println(usuario);
                                 //System.out.println(parent.getValue());
                                 
-                                if(part1.equals(usuario) && part2.equals(parent.getValue()) && part3.equals(item.getValue())){
+                                String string2 = part2;
+                                String r = "";
+                    String[] parts2 = string2.split("/");
+                                String part21 = parts2[0];
+                                //System.out.println(part21);
+                                String part22 = parts2[1];
+                                //System.out.println(part22);
+                                for(int k=1;k<parts2.length - 1;k++){
+                                    r+=parts2[k]+"/";
+                                    
+                                }
+                                
+                                String rutab = r + "root";
+                                //System.out.println(rutab);
+                                
+                                //String part23 = parts[2];
+                                //System.out.println(part3);
+                                //String part4 = parts[3];
+                                
+                                String ruta = ruta(item);
+                                
+                                //String rutaar = rutaar(item);
+                                
+                                /*System.out.println(rutaa);
+                                System.out.println(rutaar);*/
+                                
+                                if(part1.equals(usuario) && part2.equals(ruta)){
                                     
                                     System.out.println("Existe archivo");
                                     
                                     Iterator<String> nombreIterator = archivos.iterator();
                                     while(nombreIterator.hasNext()){
                                         String elemento = nombreIterator.next();
-                                        System.out.println(part1+","+part2+","+part3+","+part4+","+part5);
+                                        //System.out.println(part1+","+part2+","+part3+","+part4+","+part5);
                                         
-                                        if(elemento.equals(part1+","+part2+","+part3+","+part4+","+part5))
+                                        if(elemento.equals(array[i]))
                                             nombreIterator.remove();
                                         }// Eliminamos el Elemento que hemos obtenido del Iterator
                  
                                     
                                 }
                                 
-                                else if(part1.equals(usuario) && part2.equals(item.getValue())){
+                                else if(part1.equals(usuario) && rutab.equals(ruta)){
                                     
                                     System.out.println("Existe carpeta");
                                     
                                     Iterator<String> nombreIterator = archivos.iterator();
                                     while(nombreIterator.hasNext()){
                                         String elemento = nombreIterator.next();
-                                        System.out.println(part1+","+part2+","+part3+","+part4+","+part5);
+                                        //System.out.println(part1+","+part2+","+part3+","+part4);
                                         
-                                        if(elemento.equals(part1+","+part2+","+part3+","+part4+","+part5))
+                                        if(elemento.equals(array[i])){
                                             nombreIterator.remove();
+                                        }
                                         }
                                     Iterator<String> nombreIterator2 = carpetas.iterator();
                                     while(nombreIterator2.hasNext()){
                                         String elemento = nombreIterator2.next();
-                                        System.out.println(usuario+","+item.getParent().getValue()+","+item.getValue());
+                                        //System.out.println(usuario+","+item.getParent().getValue()+","+item.getValue());
                                         
-                                        if(elemento.equals(usuario+","+item.getParent().getValue()+","+item.getValue()))
+                                        if(elemento.equals(part1+","+ruta))
                                             nombreIterator2.remove();
                                         }
                                     
@@ -829,9 +1220,9 @@ public class PruebaVentanas extends Application {
                     
                 }
 		
-                                    Object[] array2 = carpetas.toArray();
+                                    //Object[] array2 = carpetas.toArray();
                 
-                for(int i=0;i<array2.length;i++){
+                /*for(int i=0;i<array2.length;i++){
                     
                     //System.out.println(array[i].toString());
                     
@@ -841,22 +1232,42 @@ public class PruebaVentanas extends Application {
                                 //System.out.println(part1);
                                 String part2 = parts[1];
                                 //System.out.println(part2);
-                                String part3 = parts[2];
+                                //String part3 = parts[2];
                                 //System.out.println(part3);
                                 
                                 //System.out.println(usuario);
                                 //System.out.println(parent.getValue());
+                                String string2 = part2;
+                                String r = "";
+                    String[] parts2 = string2.split("/");
+                                String part21 = parts2[0];
+                                //System.out.println(part21);
+                                String part22 = parts2[1];
+                                //System.out.println(part22);
+                                for(int k=1;k<parts2.length - 1;k++){
+                                    r+=parts2[k]+"/";
+                                    
+                                }
                                 
-                                if(part1.equals(usuario) && part2.equals(parent.getValue()) && part3.equals(item.getValue())){
+                                String rutab = r + "root";
+                                //System.out.println(rutab);
+                                
+                                //String part23 = parts[2];
+                                //System.out.println(part3);
+                                //String part4 = parts[3];
+                                
+                                String ruta = ruta(parent);
+                                
+                                if(part1.equals(usuario) && rutab.equals(ruta)){
                                     
                                     System.out.println("Existe carpeta");
                                     
                                     Iterator<String> nombreIterator = carpetas.iterator();
                                     while(nombreIterator.hasNext()){
                                         String elemento = nombreIterator.next();
-                                        System.out.println(part1+","+part2+","+part3);
+                                        //System.out.println(part1+","+part2+","+part3);
                                         
-                                        if(elemento.equals(part1+","+part2+","+part3))
+                                        if(elemento.equals(array2[i]))
                                             nombreIterator.remove();
                                         }// Eliminamos el Elemento que hemos obtenido del Iterator
                  
@@ -868,7 +1279,7 @@ public class PruebaVentanas extends Application {
                                     System.out.println("No Existe carpeta");
                                 }
                     
-                }
+                }*/
                 
                 parent.getChildren().remove(item);
 		}
@@ -1005,6 +1416,8 @@ public class PruebaVentanas extends Application {
 
 	private void editCommit(TreeView.EditEvent<String> event)
 	{
+            
+            //Agregar a bitacora
 		this.writeMessage(event.getTreeItem() + " changed." +
 				" old = " + event.getOldValue() +
 				", new = " + event.getNewValue());
@@ -1013,6 +1426,7 @@ public class PruebaVentanas extends Application {
                                     
                                     String com= "El nodo" + event.getTreeItem().getValue() + "a sido modificado."+ " Timestamp:" + timestamp + " Usuario:" + usuario;
                                     stack.push(com);
+                                    
                                     
                 TreeItem<String> parent = event.getTreeItem().getParent();
                 
@@ -1033,13 +1447,52 @@ public class PruebaVentanas extends Application {
                                 //System.out.println(part3);
                                 String part4 = parts[3];
                                 //System.out.println(part4);
-                                String part5 = parts[4];
+                                //String part5 = parts[4];
                                 //System.out.println(part5);
                                 
                                 //System.out.println(usuario);
                                 //System.out.println(parent.getValue());
+                                String string2 = part2;
                                 
-                                if(part1.equals(usuario) && part2.equals(parent.getValue()) && part3.equals(event.getOldValue())){
+                                String r = "";
+                                String r2 = "";
+                                
+                    String[] parts2 = string2.split("/");
+                                String part21 = parts2[0]; //hijo
+                                //System.out.println(part21);
+                                String part22 = parts2[1]; //padre
+                                //System.out.println(part22);
+                                
+                                for(int k=1;k<parts2.length - 1;k++){
+                                    r+=parts2[k]+"/";
+                                    
+                                }
+                                
+                                String rutab = r + "root";
+                                //System.out.println(rutab);
+                                
+                                
+                                
+                                for(int l=2;l<parts2.length - 1;l++){
+                                    r+=parts2[l]+"/";
+                                    
+                                }
+                                
+                                String rutab2 = r2 + "root";
+                                //System.out.println(rutab2);
+                                
+                                //String part23 = parts[2];
+                                //System.out.println(part3);
+                                //String part4 = parts[3];
+                                
+                                String ruta = ruta(event.getTreeItem());
+                                
+                                //String rutaar = rutaar(item);
+                                
+                                //*System.out.println(rutaa);
+                                //System.out.println(ruta);
+                                
+                                if(part1.equals(usuario) && part2.equals(ruta)){
                                     
                                     System.out.println("Existe archivo");
                                     
@@ -1047,28 +1500,47 @@ public class PruebaVentanas extends Application {
                                         Iterator<String> nombreIterator = archivos.iterator();
                                     while(nombreIterator.hasNext()){
                                         String elemento = nombreIterator.next();
-                                        System.out.println(part1+","+part2+","+part3+","+part4+","+part5);
+                                        //System.out.println(part1+","+part2+","+part3+","+part4+","+part5);
                                         
-                                        if(elemento.equals(part1+","+part2+","+part3+","+part4+","+part5)){
+                                        if(elemento.equals(array[i])){
                                             //nombreIterator.remove();
                                             int count = 0;
                                             for(int k=0;k<array.length;k++){
+                                                
+                                                //System.out.println(array[k]);
+                                                
+                                                String stringv = array[k].toString();
+                                                String[] partsv = stringv.split(",");
+                                                String part1v = partsv[0];
+                                                //System.out.println(part1);
+                                                String part2v = partsv[1];
+                                                //System.out.println(part2);
+                                                String part3v = partsv[2];
+                                                //System.out.println(part3);
+                                                String part4v = partsv[3];
+                                                
+                                                String rutex = part1v + "," +part2v;
+                                
+                                            //System.out.println("a: " + rutex);
+                                            //System.out.println("b: " + part1+","+event.getNewValue()+"/"+rutab);
                                             
-                                            if(part1.equals(usuario) && part2.equals(parent.getValue()) && part3.equals(event.getNewValue())){
+                                            if(rutex.equals(part1+","+event.getNewValue()+"/"+rutab)){
                                                 count++;
                                             }
                                             }
-                                            
+                                            //System.out.println(count);
                                             if(count == 0){
-                                            archivos.set(i,part1+","+part2+","+event.getNewValue()+","+part4+","+part5);
+                                            archivos.set(i,part1+","+event.getNewValue()+"/" +rutab + "," + part3 + "," +part4);
                                             }
                                             else{
+                                                
                                                 this.writeMessage("No se ha modificado,ya existe archivo con ese nombre");
+                                                
                                             }
                                         
                                         }
                 
-                                        }// Eliminamos el Elemento que hemos obtenido del Iterator
+                                        }
                                         
                                     }
                                     
@@ -1082,53 +1554,66 @@ public class PruebaVentanas extends Application {
                                 }
                                 
                                 
-                                else if(part1.equals(usuario) && part2.equals(event.getOldValue())){
-                                    
+                                else if(part1.equals(usuario) && rutab.equals(ruta)){
+                                    int count = 0;
+                                    Object[] array2 = carpetas.toArray();
                                     System.out.println("Existe carpeta");
                                     if(!event.getNewValue().equals("")){
-                                        Iterator<String> nombreIterator = archivos.iterator();
-                                    while(nombreIterator.hasNext()){
-                                        String elemento = nombreIterator.next();
-                                        System.out.println(part1+","+part2+","+part3+","+part4+","+part5);
+                                        Iterator<String> nombreIterator2 = carpetas.iterator();
+                                    int j = 0;
+                                    while(nombreIterator2.hasNext()){
+                                        String elemento = nombreIterator2.next();
+                                        //System.out.println(usuario+","+parent.getValue()+","+event.getOldValue());
                                         
-                                        if(elemento.equals(part1+","+part2+","+part3+","+part4+","+part5)){
-                                            //nombreIterator.remove();
-                                            int count = 0;
-                                            for(int k=0;k<array.length;k++){
-                                            
-                                            if(part1.equals(usuario) && part2.equals(event.getNewValue())){
+                                        if(elemento.equals(usuario+","+event.getOldValue()+"/"+rutab2)){
+                                            //nombreIterator2.remove();
+                                            for(int k=0;k<array2.length;k++){
+                                            if(array[k].equals(usuario+","+event.getNewValue()+"/"+rutab2)){
                                                 count++;
                                             }
                                             }
                                             
                                             if(count == 0){
-                                            archivos.set(i,part1+","+event.getNewValue()+","+part3+","+part4+","+part5);
+                                                carpetas.set(j,part1+","+event.getNewValue()+"/"+rutab2);
+                                                
                                             }
                                             else{
                                                 this.writeMessage("No se ha modificado,ya existe carpeta con ese nombre");
                                             }
                                             
-                                            
-                                        }
-                                            
-                                        }
-                                   /* Iterator<String> nombreIterator2 = carpetas.iterator();
-                                    int j = 0;
-                                    while(nombreIterator2.hasNext()){
-                                        String elemento = nombreIterator2.next();
-                                        System.out.println(usuario+","+parent.getValue()+","+event.getOldValue());
-                                        
-                                        if(elemento.equals(usuario+","+parent.getValue()+","+event.getOldValue())){
-                                            //nombreIterator2.remove();
-                                            carpetas.set(j,part1+","+parent.getValue()+","+event.getNewValue());}
+                                            }
                                         j++;
-                                        }*/
+                                        }
+                                        
+                                        
+                                        
+                                        
+                                        Iterator<String> nombreIterator = archivos.iterator();
+                                    while(nombreIterator.hasNext()){
+                                        String elemento = nombreIterator.next();
+                                        //System.out.println(part1+","+part2+","+part3+","+part4);
+                                        
+                                        if(elemento.equals(array[i])){
+                                            //nombreIterator.remove();
+                                            //int count = 0;
+                                            
+                                            
+                                            if(count == 0){
+                                            archivos.set(i,part1+","+part21+ "/"+event.getNewValue()+"/"+rutab2+","+part3+","+part4);
+                                            }
+                                            
+                                            
+                                            
+                                        }
+                                            
+                                        }
+                                   
                                         
                                     }
                                     
-                                    /*else{
-                                        this.writeMessage("No se puede dejar vacio el nombre de carpeta");
-                                    }*/
+                                    else{
+                                      this.writeMessage("No se puede dejar vacio el nombre de carpeta");
+                                   }
                                     
                        
                                 }
@@ -1138,7 +1623,7 @@ public class PruebaVentanas extends Application {
                     
                 }
                 
-                Object[] array2 = carpetas.toArray();
+                /*Object[] array2 = carpetas.toArray();
                 
                 for(int i=0;i<array2.length;i++){
                     
@@ -1206,7 +1691,7 @@ public class PruebaVentanas extends Application {
                                 }
                     //String registro = partn1 + ","+ partn2 + "," + partn3;
                     //carpetas.add(registro);
-                }
+                }*/
 	}
 
 	private void editCancel(TreeView.EditEvent<String> e)
