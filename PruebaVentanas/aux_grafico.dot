@@ -1,9 +1,9 @@
 digraph grafica{
 rankdir=TB;
 node [shape = record, style=filled, fillcolor=seashell2];
-nodo2 [ label ="<C0>|Nombre:t2.txt Contenido:doc Timestamp:2019-11-17 19:26:33.686 Usuario:Fernando Altura:1|<C1>"];
-nodo1 [ label ="Nombre:t1.txt Contenido:doc Timestamp:2019-11-17 19:26:30.117 Usuario:Fernando Altura:0"];
-nodo2:C0->nodo1
-nodo3 [ label ="Nombre:t3.txt Contenido:doc Timestamp:2019-11-17 19:26:37.14 Usuario:Fernando Altura:0"];
-nodo2:C1->nodo3
+nodo3 [ label ="<C0>|Nombre:t3.txt Contenido:doc Timestamp:2019-11-18 01:16:01.515 Usuario:Fernando Altura:1|<C1>"];
+nodo1 [ label ="Nombre:t1.txt Contenido:doc Timestamp:2019-11-18 01:15:51.717 Usuario:Fernando Altura:0"];
+nodo3:C0->nodo1
+nodo2 [ label ="Nombre:t6.txt Contenido:doc Timestamp:2019-11-18 01:15:57.805 Usuario:Fernando Altura:0"];
+nodo3:C1->nodo2
 }

@@ -1,5 +1,5 @@
 digraph firsGraph{
 node [shape=record];
 rankdir=LR;
-nodoe_A [shape=record    label="|El nodoArchivosa sido modificado. Timestamp:2019-11-17 09:44:16.644 Usuario:Fernando|El nodotxt1.doc a sido creado. Timestamp:2019-11-17 09:44:08.683 Usuario:Fernando|El nodoArchivos a sido creado. Timestamp:2019-11-17 09:43:43.416 Usuario:Fernando"];
+nodoe_A [shape=record    label="|El nodot6.txt a sido eliminado. Timestamp:2019-11-18 01:16:26.213 Usuario:Fernando|El nodot3.txt a sido creado. Timestamp:2019-11-18 01:16:01.515 Usuario:Fernando|El nodot6.txt a sido creado. Timestamp:2019-11-18 01:15:57.804 Usuario:Fernando|El nodot1.txt a sido creado. Timestamp:2019-11-18 01:15:51.716 Usuario:Fernando|El nodoArchivos a sido creado. Timestamp:2019-11-18 01:15:44.997 Usuario:Fernando"];
 }
